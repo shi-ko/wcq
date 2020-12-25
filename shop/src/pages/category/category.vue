@@ -64,7 +64,7 @@
 
     }
 </script>
-<style lang="">
+<style lang="" scoped>
     .el-button {
         margin-bottom: 20px;
     }

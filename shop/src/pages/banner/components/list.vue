@@ -2,13 +2,13 @@
   <div>
     <el-row>
       <el-col :span='2'>
-        规格编号
+        编号
       </el-col>
       <el-col :span='3'>
-        规格名称
+        轮播图标题
       </el-col>
       <el-col :span='13'>
-        规格属性
+        图片
       </el-col>
       <el-col :span='2'>
         状态
@@ -23,40 +23,33 @@
         {{item.id}}
       </el-col>
       <el-col :span='3'>
-        {{item.specsname}}
+        {{item.title}}
       </el-col>
-      <el-col :span='13' v-if='item.attrs.length!=0'>
-        <el-tag v-for="(i, n) in item.attrs" :key="n">{{i}}</el-tag>
-      </el-col>
-      <el-col :span='13' v-else>
-        暂无数据
+      <el-col :span='13'>
+        
+        <img :src="'api/'+item.img" alt="" class="small">
       </el-col>
       <el-col :span='2'>
         <el-button v-if='item.status==1' type="primary" plain @click='open(item.id)'>禁用</el-button>
         <el-button v-else type="primary" plain @click='open(item.id)'>启用</el-button>
       </el-col>
       <el-col :span='4'>
-        <router-link to="/specs/add?isEdit=true">
+        <router-link to="/banner/add?isEdit=true">
           <el-button type="primary" plain @click='edit(item.id)'>编辑</el-button>
         </router-link>
         <el-button type="danger" plain @click='del(item.id)'>删除</el-button>
       </el-col>
     </el-row>
 
-    <div class="block">
-      <el-pagination :page-size="3" layout="total, prev, pager, next" :total="total"
-        @current-change="handleCurrentChange" :current-page.sync="currentPage">
-      </el-pagination>
-    </div>
+    
   </div>
 </template>
 <script>
     import {
-        specscount,
-        specslist,
-        specsedit,
-        specsinfo,
-        specsdelete
+        bannerlist,
+        banneredit,
+        bannerinfo,
+        bannerdelete
     } from '../../../utils/request.js'
     import {
         mapState,
@@ -74,50 +67,31 @@
     export default {
         data() {
             return {
-                total: null,
                 list: null,
-                currentPage: 1
             }
         },
         mounted() {
-            specscount().then((req) => {
-                this.total = req.data.list[0].total
-            })
-            specslist({
-                size: 3,
-                page: 1
-            }).then((req) => {
+
+            bannerlist().then((req) => {
                 this.list = req.data.list
             })
         },
-        computed: {
-            ...mapState,
-
-        },
+        computed: {},
         methods: {
             ...mapActions({
-                'reqList': 'specs/reqList',
-                'reqItem': 'specs/reqItem',
+                'reqList': 'banner/reqList',
+                'reqItem': 'banner/reqItem',
             }),
-            handleCurrentChange(val) {
-                specslist({
-                    size: 3,
-                    page: val
-                }).then((req) => {
-                    this.list = req.data.list
-                })
-            },
+
             open(n) {
-                specsinfo({
+                bannerinfo({
                     id: n
                 }).then((req, res) => {
-                    let obj = req.data.list[0]
+                    let obj = req.data.list
                     obj.status == 1 ? obj.status = 2 : obj.status = 1
-                    specsedit(obj).then((req, res) => {
-                        specslist({
-                            size: 3,
-                            page: this.currentPage
-                        }).then((req) => {
+                    obj.id = n
+                    banneredit(obj).then((req, res) => {
+                        bannerlist().then((req) => {
                             this.list = req.data.list
                         })
                     })
@@ -129,10 +103,9 @@
 
             },
             del(n) {
-                specsdelete({
+                bannerdelete({
                     id: n
                 }).then(req => {
-                    console.log(req);
                     if (req.data.code == 200) {
                         successAlert(req.data.msg)
                         this.reqList()
@@ -146,6 +119,9 @@
         },
     }
 </script>
-<style lang="">
-
+<style lang="" scoped>
+    .small {
+        width: 100px;
+        height: 100px;
+    }
 </style>

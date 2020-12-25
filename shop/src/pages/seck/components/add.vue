@@ -42,9 +42,9 @@
       <p>
         <span>*</span>
         商品
-        <el-select  v-model="newData.goodsid">
-            <el-option v-for="(item,index) in nowCate" :key="item.index" :label="item.catename" :value="item.id">
-            </el-option>
+        <el-select v-model="newData.goodsid">
+          <el-option v-for="(item,index) in nowCate" :key="item.index" :label="item.catename" :value="item.id">
+          </el-option>
 
         </el-select>
       </p>
@@ -54,7 +54,7 @@
       </el-switch>
     </h5>
     <h5>
-      <router-link to="/specs">
+      <router-link to="/seckill">
         <el-button type="primary" @click='add'>添加</el-button>
       </router-link>
     </h5>
@@ -77,13 +77,14 @@
             return {
                 newData: {
                     title: '',
-                    begintime: 1592582400000,
-                    endtime: 1592665200000,
+                    begintime: 1592582400001,
+                    endtime: 1592665200001,
                     first_cateid: null,
                     second_cateid: null,
                     goodsid: null,
                     status: null
                 },
+                value1: []
             }
         },
         mounted() {
@@ -92,18 +93,12 @@
         },
 
         computed: {
-            // ...mapState('seck', ['item']),
+            ...mapState('seck', ['item']),
             ...mapGetters({
                 'cateList': 'category/getList',
                 'cateItem': 'category/getItem',
-                'goodsItem': 'goods/getItem'
             }),
-            value1: function() {
-                let arr = []
-                arr.push(new Date(this.newData.begintime))
-                arr.push(new Date(this.newData.endtime))
-                return arr
-            },
+
             nowCate: function() {
                 if (this.newData.first_cateid !== null) {
                     for (let n in this.cateList) {
@@ -117,10 +112,16 @@
         },
         methods: {
             add: function() {
+                this.newData.begintime = this.value1[0].getTime()
+                this.newData.endtime = this.value1[1].getTime()
+
                 if (this.$route.query.isEdit == 'true') {
+
                     seckedit(this.newData)
 
                 } else {
+                    console.log(this.newData, '1111111111');
+
                     seckadd(this.newData)
                 }
 
@@ -134,24 +135,29 @@
         },
         watch: {
             item: function() {
-                this.newData = this.item
+                if (this.$route.query.isEdit == 'true') {
+                    this.newData = this.item
+                }
             },
+            //根据目录查对应商品
             nowCate: function() {
-                goodsinfo({
-                    id: this.newData.second_cateid
-                }).then(req => {
-                    console.log(req);
-                })
+                // console.log(this.item);
+                // goodsinfo({
+                //     id: this.newData.second_cateid
+                // }).then(req => {
+                //     console.log(req);
+                // })
+            },
+            'newData.begintime': function() {
+                let arr = []
+                arr.push(new Date(Number(this.newData.begintime)))
+                arr.push(new Date(Number(this.newData.endtime)))
+                this.value1 = arr
             }
         },
 
     }
 </script>
 <style lang="" scoped>
-    .small {
-        /* background: #66b1ff;
-          border-color: #66b1ff;
-          color: #FFF; */
-        margin: 4px;
-    }
+
 </style>

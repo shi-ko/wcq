@@ -8,6 +8,9 @@ import role from './modules/role';
 import manager from './modules/manager';
 import specs from './modules/specs';
 import goods from './modules/goods'
+import seck from './modules/seck'
+import member from './modules/member'
+import banner from './modules/banner'
 
 import { state, mutations, getters } from './mutations.js';
 import actions from './actions.js';
@@ -22,7 +25,9 @@ export default new Vuex.Store({
         manager,
         role,
         specs,
-        goods
-
+        goods,
+        seck,
+        member,
+        banner
     }
 })

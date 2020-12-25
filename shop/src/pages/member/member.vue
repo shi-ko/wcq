@@ -1,15 +1,9 @@
 <template lang="">
-  <div>
-    <router-link to="/goods/add?isEdit=false">
-      <el-button type="primary" @click='add' v-show="flag">
-        添加
-      </el-button>
-    </router-link>
-
-    <router-view @add='add' ref="reference"></router-view>
-
-  </div>
-</template>
+    <div>
+      <router-view @add='add' ></router-view>
+  
+    </div>
+  </template>
 <script>
     import vList from './components/list.vue'
     export default {
@@ -28,7 +22,6 @@
         },
         methods: {
             add: function() {
-                console.log(111);
                 this.flag = !this.flag
 
             },

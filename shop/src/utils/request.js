@@ -363,20 +363,25 @@ export const memberinfo = (params) => {
 }
 
 //会员修改
-export const memberedit = (params) => {
+export const memberedit = (data) => {
     return axios({
+        method: 'post',
         url: baseUrl + '/api/memberedit',
-        params: params
+        data: data
     })
 }
 
 //轮播图管理
 //轮播图添加** 
 export const banneradd = (data) => {
+    let form = new FormData
+    for (let i in data) {
+        form.append(i, data[i])
+    }
     return axios({
         method: 'post',
         url: baseUrl + '/api/banneradd',
-        data: data
+        data: form
     })
 }
 
@@ -400,10 +405,14 @@ export const bannerinfo = (params) => {
 
 //轮播图修改
 export const banneredit = (data) => {
+    let form = new FormData
+    for (let i in data) {
+        form.append(i, data[i])
+    }
     return axios({
         method: 'post',
         url: baseUrl + '/api/banneredit',
-        data: data
+        data: form
     })
 }
 

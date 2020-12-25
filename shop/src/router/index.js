@@ -54,9 +54,9 @@ export default new Router({
                     name: '管理员',
                     component: () =>
                         import ('../pages/manager/manager.vue'),
-                    // beforeEnter(to, from, next) {
-                    //     fun('/manager') ? next() : next('/')
-                    // }
+                    beforeEnter(to, from, next) {
+                        fun('/manager') ? next() : next('/')
+                    }
                 }, {
                     path: 'category',
                     name: '商品分类',
@@ -95,17 +95,58 @@ export default new Router({
                     },
                     children: [{
                         path: 'add',
-                        name: '商品规格添加',
+                        name: '商品添加',
                         component: () =>
                             import ('../pages/goods/components/add.vue'),
 
                     }, {
                         path: '',
-                        name: '商品规格列表',
+                        name: '商品列表',
                         component: () =>
                             import ('../pages/goods/components/list.vue'),
                     }]
                 }, {
+                    path: 'member',
+                    component: () =>
+                        import ('../pages/member/member.vue'),
+
+                    beforeEnter(to, from, next) {
+                        fun('/member') ? next() : next('/')
+                    },
+                    children: [{
+                        path: 'add',
+                        name: '会员添加',
+                        component: () =>
+                            import ('../pages/member/components/add.vue'),
+
+                    }, {
+                        path: '',
+                        name: '会员列表',
+                        component: () =>
+                            import ('../pages/member/components/list.vue'),
+                    }]
+                }, {
+                    path: 'banner',
+                    component: () =>
+                        import ('../pages/banner/banner.vue'),
+
+                    beforeEnter(to, from, next) {
+                        fun('/banner') ? next() : next('/')
+                    },
+                    children: [{
+                        path: 'add',
+                        name: '轮播图添加',
+                        component: () =>
+                            import ('../pages/banner/components/add.vue'),
+
+                    }, {
+                        path: '',
+                        name: '轮播图列表',
+                        component: () =>
+                            import ('../pages/banner/components/list.vue'),
+                    }]
+                },
+                {
                     path: 'seckill',
                     component: () =>
                         import ('../pages/seck/seck.vue'),
@@ -133,7 +174,7 @@ export default new Router({
             ]
         }, {
             path: '*',
-            redirect: 'login',
+            redirect: '/login',
         }
     ]
 })

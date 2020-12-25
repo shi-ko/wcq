@@ -21,23 +21,20 @@
       </em>
       <em>
         图片
-        <el-upload class="avatar-uploader" action="#" :show-file-list="false">
-          <img v-if="imageUrl" :src="imageUrl" class="avatar">
-          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-        </el-upload>
+        <el-upload action="/api" list-type="picture-card"
+        :on-preview="handlePictureCardPreview"  :on-success='handleSuccess'>
+        <i class="el-icon-plus"></i>
+      </el-upload>
+      <el-dialog :visible.sync="dialogVisible">
+        <img width="100%" :src="dialogImageUrl" alt="">
+      </el-dialog>
       </em>
       <em>
         状态
         <el-switch v-model="newData.status" :active-value=1 :inactive-value=2></el-switch>
       </em>
       <em>
-      <el-upload action="/api" list-type="picture-card"
-        :on-preview="handlePictureCardPreview" :on-remove="handleRemove" :on-success='handleSuccess'>
-        <i class="el-icon-plus"></i>
-      </el-upload>
-      <el-dialog :visible.sync="dialogVisible">
-        <img width="100%" :src="dialogImageUrl" alt="">
-      </el-dialog>
+      
     </em>
     </el-dialog>
 
@@ -85,9 +82,7 @@
             ...mapState('category', ['item']),
         },
         methods: {
-            ...mapActions({
 
-            }),
             handlePictureCardPreview(file) {
                 this.dialogImageUrl = file.url;
                 this.dialogVisible = true;

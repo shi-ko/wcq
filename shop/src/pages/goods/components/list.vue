@@ -150,7 +150,7 @@
                 })
             },
             edit(n) {
-                this.$emit('isEdit')
+                this.$emit('add')
                 this.reqItem(n)
 
             },

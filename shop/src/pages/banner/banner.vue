@@ -1,17 +1,16 @@
 <template lang="">
   <div>
-    <router-link to="/goods/add?isEdit=false">
+    <router-link to="/banner/add?isEdit=false">
       <el-button type="primary" @click='add' v-show="flag">
         添加
       </el-button>
     </router-link>
 
-    <router-view @add='add' ref="reference"></router-view>
+    <router-view @add='add'></router-view>
 
   </div>
 </template>
 <script>
-    import vList from './components/list.vue'
     export default {
         data() {
             return {
@@ -22,9 +21,6 @@
 
         mounted() {
 
-        },
-        components: {
-            vList: vList
         },
         methods: {
             add: function() {

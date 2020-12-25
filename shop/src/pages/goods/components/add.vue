@@ -65,7 +65,6 @@
       <p>
         规格属性
         <el-select v-model="newData.specsattr">
-
           <el-option v-for="(item,index) in nowAttr" :key="index" :label="item" :value="index">
           </el-option>
         </el-select>
@@ -93,6 +92,9 @@
         <el-switch v-model="newData.status"></el-switch>
       </p>
     </h5>
+    <div id="div1">
+      
+    </div>
     <h5>
       <router-link to="/goods">
       <el-button type="primary" @click='add'>添加</el-button>
@@ -105,7 +107,8 @@
         goodsadd,
         goodsedit
     } from '../../../utils/request.js'
-
+    import E from 'wangeditor'
+    const editor = new E('#div1')
     import {
         mapState,
         mapGetters,
@@ -114,6 +117,7 @@
     export default {
         data() {
             return {
+                editor: null,
                 newData: {
                     description: "",
                     first_cateid: null,
@@ -134,6 +138,9 @@
         mounted() {
             this.reqCateList()
             this.reqSpecList()
+            this.editor = new E('#editor')
+            this.editor.create()
+            this.editor.txt.html(this.newData.description);
 
         },
 
@@ -177,13 +184,6 @@
                 'reqSpecItem': 'specs/reqItem',
                 'reqGoodsItem': 'goods/reqItem'
             }),
-            //根据一级分类获取二级分类
-
-
-            //获取属性  下拉框
-
-
-            // 根据属性 获取规格 下拉框
 
             add: function() {
 
@@ -208,7 +208,7 @@
                     console.log(this.item);
 
                 }
-            }
+            },
         },
 
     }

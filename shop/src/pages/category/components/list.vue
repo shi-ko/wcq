@@ -124,7 +124,7 @@
 
     }
 </script>
-<style lang="">
+<style lang="" scoped>
     div {
         font-size: 16px;
         overflow: hidden;

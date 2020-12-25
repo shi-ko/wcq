@@ -1,4 +1,4 @@
-import { secklist, seckinfo } from '../../utils/request';
+import { bannerlist, bannerinfo } from '../../utils/request';
 
 //初始化
 
@@ -27,7 +27,7 @@ const mutations = {
 
 const actions = {
     reqList({ commit, state }) {
-        secklist({ istree: true }).then((req, res) => {
+        bannerlist({ istree: true }).then((req, res) => {
             if (req.status == '200') {
                 commit('changeList', req.data.list)
             }
@@ -35,10 +35,10 @@ const actions = {
         })
     },
     reqItem({ commit, state }, id) {
-        seckinfo({ id: id }).then((req, res) => {
+        bannerinfo({ id: id }).then((req, res) => {
             if (req.status == '200') {
+                console.log(req.data);
                 let obj = req.data.list
-                obj.id = id
                 commit('changeItem', obj)
             }
 
