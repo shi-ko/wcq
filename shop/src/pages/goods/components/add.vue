@@ -48,8 +48,13 @@
     <h5>
       <p>
         图片
-        <!-- <el-input>
-        </el-input> -->
+        <el-upload action="/api" list-type="picture-card"
+        :on-preview="handlePictureCardPreview"  :on-success='handleSuccess'>
+        <i class="el-icon-plus"></i>
+      </el-upload>
+      <el-dialog :visible.sync="dialogVisible">
+        <img width="100%" :src="dialogImageUrl" alt="">
+      </el-dialog>
       </p>
     </h5>
     <h5>
@@ -92,9 +97,7 @@
         <el-switch v-model="newData.status"></el-switch>
       </p>
     </h5>
-    <div id="div1">
-      
-    </div>
+    <div id="demo1"></div>
     <h5>
       <router-link to="/goods">
       <el-button type="primary" @click='add'>添加</el-button>
@@ -107,8 +110,7 @@
         goodsadd,
         goodsedit
     } from '../../../utils/request.js'
-    import E from 'wangeditor'
-    const editor = new E('#div1')
+    import wangEditor from 'wangeditor'
     import {
         mapState,
         mapGetters,
@@ -117,7 +119,6 @@
     export default {
         data() {
             return {
-                editor: null,
                 newData: {
                     description: "",
                     first_cateid: null,
@@ -133,15 +134,27 @@
                     status: null
                 },
 
+
+                editor: null,
+
+
+                dialogImageUrl: '',
+                dialogVisible: false
             }
         },
         mounted() {
             this.reqCateList()
             this.reqSpecList()
-            this.editor = new E('#editor')
-            this.editor.create()
-            this.editor.txt.html(this.newData.description);
 
+            //
+            const editor = new wangEditor(`#demo1`)
+                // 配置 onchange 回调函数，将数据同步到 vue 中
+            editor.config.onchange = (newHtml) => {
+                    this.newData.description = newHtml
+                }
+                // 创建编辑器
+            editor.create()
+            this.editor = editor
         },
 
         computed: {
@@ -196,17 +209,25 @@
                 }
                 this.$emit('add')
             },
+            handlePictureCardPreview(file) {
+                this.dialogImageUrl = file.url;
+                this.dialogVisible = true;
+            },
+            handleSuccess(response, file, fileList) {
+                this.newData.img = file.raw
 
+            },
 
-
-
+        },
+        beforeDestroy() {
+            // 调用销毁 API 对当前编辑器实例进行销毁
+            this.editor.destroy()
+            this.editor = null
         },
         watch: {
             item: function() {
                 if (this.$route.query.isEdit == 'true') {
                     this.newData = this.item
-                    console.log(this.item);
-
                 }
             },
         },
